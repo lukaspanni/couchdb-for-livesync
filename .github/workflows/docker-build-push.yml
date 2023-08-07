@@ -27,3 +27,15 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/lukaspanni/couchdb-for-livesync:latest
+  deploy:
+    needs: build
+    if: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' || github.event_name='schedule' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger Deployment
+        env: 
+          GH_TOKEN: ${{ secrets.CD_TOKEN }}
+        run: |
+           gh api repos/lukaspanni/infrastructure/dispatches --input - <<< '{"event_type": "${{ github.event.repository.name }}", "client_payload": { "kubernetes-config": "couchdb.yml", "image-name": "ghcr.io/lukaspanni/ghcr.io/lukaspanni/couchdb-for-livesync", "image-sha": "${{ github.sha }}" }'
+          
