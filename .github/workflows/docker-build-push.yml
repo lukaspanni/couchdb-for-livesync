@@ -37,5 +37,5 @@ jobs:
         env: 
           GH_TOKEN: ${{ secrets.CD_TOKEN }}
         run: |
-           gh api repos/lukaspanni/infrastructure/dispatches --input - <<< '{"event_type": "${{ github.event.repository.name }}", "client_payload": { "kubernetes-config": "couchdb.yml", "image-name": "ghcr.io/lukaspanni/ghcr.io/lukaspanni/couchdb-for-livesync", "image-sha": "${{ github.sha }}" }'
+           gh api repos/lukaspanni/infrastructure/dispatches --input - <<< '{"event_type": "${{ github.event.repository.name }}", "client_payload": { "kubernetes-config": "couchdb.yml", "image-name": "ghcr.io/lukaspanni/ghcr.io/lukaspanni/couchdb-for-livesync" }'
           
